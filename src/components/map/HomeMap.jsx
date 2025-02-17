@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import DescBottomSheet from "../modal/DescBottomSheet";
-import markerIcon from "../../assets/icons/marker.png"; // 마커 이미지
+import markerIcon from "../../assets/icons/marker.png"; // 기본 마커 이미지
+import selectedMarkerIcon from "../../assets/icons/marker_selected.png"; // 특별 마커 이미지
 import { fetchHomeData } from "../../apis/homeApi";
 
-const KakaoMap = () => {
+const KakaoMap = ({ selectedNumber }) => {
+  console.log(selectedNumber);
   const [places, setPlaces] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기 상태
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 데이터
@@ -47,12 +49,21 @@ const KakaoMap = () => {
         console.log("로드된 데이터:", data.spots); // 데이터 확인
         setPlaces(data.spots);
 
-        // 마커 이미지 설정
+        // 기본 마커 이미지 설정
         const markerImage = new kakao.maps.MarkerImage(
-          markerIcon, // 마커 이미지 경로
-          new kakao.maps.Size(30, 30), // 마커 크기
+          markerIcon, // 기본 마커 이미지 경로
+          new kakao.maps.Size(30, 40), // 마커 크기
           {
             alt: "marker", // 이미지에 대한 대체 텍스트
+          }
+        );
+
+        // 특별 마커 이미지 설정
+        const selectedMarkerImage = new kakao.maps.MarkerImage(
+          selectedMarkerIcon, // 특별 마커 이미지 경로
+          new kakao.maps.Size(60, 70), // 특별 마커 크기 (기본 마커 크기와 동일)
+          {
+            alt: "selected", // 특별 마커 대체 텍스트
           }
         );
 
@@ -66,7 +77,7 @@ const KakaoMap = () => {
           const marker = new kakao.maps.Marker({
             position, // 마커 위치
             map, // 마커가 표시될 맵
-            image: markerImage, // 커스텀 마커 이미지
+            image: index === selectedNumber ? selectedMarkerImage : markerImage, // 선택된 마커는 특별 마커로 변경
           });
 
           // 마커 클릭 시 모달 열기
@@ -87,7 +98,7 @@ const KakaoMap = () => {
         polyline.setMap(map);
       });
     };
-  }, [mapCenter]);
+  }, [mapCenter, selectedNumber]); // `selectedNumber` 추가하여 변경 사항 반영
 
   return (
     <div>

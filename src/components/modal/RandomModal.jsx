@@ -11,7 +11,7 @@ import questionDice from "../../assets/dice/question.png";
 
 const diceImages = [dice1, dice2, dice3, dice4, dice5, dice6, questionDice];
 
-const RandomModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
+const RandomModal = ({ isOpen, onClose, onPlaceSelect }) => {
   if (!isOpen) return null;
   const navigate = useNavigate();
   const [diceNumber, setDiceNumber] = useState(6);
@@ -29,7 +29,8 @@ const RandomModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
     setRolling(true);
     let count = 0;
     const interval = setInterval(() => {
-      setDiceNumber(Math.floor(Math.random() * 6));
+      const newDice = Math.floor(Math.random() * 6);
+      setDiceNumber(newDice);
       count++;
       if (count >= 10) {
         clearInterval(interval);
@@ -38,22 +39,14 @@ const RandomModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
       }
     }, 100);
   };
-
-  const handleNavigate = () => {
-    if (data) {
-      navigate(`/relay/${data.relayId}/story/1`);
-      onClose();
-    }
-  };
-
-  const handlePlaceSelection = () => {
-    if (data) {
-      onPlaceSelect(data); // 선택된 장소 데이터를 상위 컴포넌트로 전달
-    }
+  // 모달을 닫을 때 부모에게 선택된 숫자를 전달
+  const handleClose = () => {
+    onClose("모달이 닫혔습니다");
+    onPlaceSelect(diceNumber + 1);
   };
 
   return (
-    <ModalBg onClick={onClose}>
+    <ModalBg onClick={handleClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <h1>부산여행마블</h1>
         <DiceImg
@@ -71,17 +64,11 @@ const RandomModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
             <p>
               <BigNumber>{diceNumber + 1}</BigNumber>번 입니다
             </p>
-            {data && (
-              <p>반경: {data.radius ? `${data.radius} km` : "정보 없음"}</p>
-            )}
           </>
         )}
-        <GoBtn onClick={rolled ? onClose : rollDice} disabled={rolling}>
+        <GoBtn onClick={rolled ? handleClose : rollDice} disabled={rolling}>
           {rolling ? "굴리는 중..." : rolled ? "모달닫기" : "주사위 돌리기"}
         </GoBtn>
-        {rolled && (
-          <GoBtn onClick={handlePlaceSelection}>선택된 여행지 확인</GoBtn>
-        )}
       </ModalContainer>
     </ModalBg>
   );

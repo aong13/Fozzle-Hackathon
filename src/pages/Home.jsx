@@ -6,25 +6,25 @@ import styled from "styled-components";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태 추가
+  const [selectedNumber, setSelectedNumber] = useState(null);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
-  const handlePlaceSelection = (placeData) => {
-    setSelectedPlace(placeData); // RandomModal에서 선택된 장소 데이터 설정
-    setIsModalOpen(false); // 모달 닫기
+  const handleNumberSelection = (selectedNumberData) => {
+    setSelectedNumber(selectedNumberData - 1);
+    setIsModalOpen(false);
   };
 
   return (
     <Container>
       <HomeHeader />
-      <HomeMap selectedPlace={selectedPlace} />
+      <HomeMap selectedNumber={selectedNumber} />
       <RandomModal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        onPlaceSelect={handlePlaceSelection}
+        onPlaceSelect={handleNumberSelection} // 함수명 수정
       />
       <FloatingButton onClick={toggleModal}>여행 시작하기</FloatingButton>
     </Container>
@@ -43,13 +43,12 @@ const FloatingButton = styled.button`
   bottom: 20px;
   right: 20px;
   padding: 15px 30px;
-  background-color: #55abe5;
-  color: white;
+  background-color: white;
+  color: #53a9e3;
   border: none;
-  border-radius: 20px;
+  border-radius: 50px;
   font-size: 18px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 2;
   transition: background-color 0.3s ease;
 

@@ -111,7 +111,7 @@ const SelectionWrapper = styled.div`
 `;
 
 const SelectionList = styled.div`
-  max-height: 200px;
+  max-height: 240px;
   overflow-y: auto;
   padding: 5px;
 `;
@@ -122,21 +122,12 @@ const OptionButton = styled.button`
   margin: 2px 0;
   border: none;
   background: ${(props) => (props.isSelected ? "#D3E8F5" : "transparent")};
-  color: black;
+  color: #4d4d4d;
   cursor: pointer;
-
+  font-size: 12pt;
   &:hover {
     background: ${(props) => (props.isSelected ? "#D3E8F5" : "transparent")};
   }
-`;
-
-const ButtonContainer = styled.div`
-  width: 98%;
-  max-width: 480px;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin: 10px 0;
 `;
 
 export default SelectBottomSheet;
