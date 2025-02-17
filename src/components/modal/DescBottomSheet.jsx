@@ -94,6 +94,7 @@ const ModalContainer = styled.div`
   span {
     color: #609cdf;
   }
+  z-index: 10;
 `;
 
 const Row = styled.div`
