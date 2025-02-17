@@ -1,18 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import backIcon from "../../assets/icons/back.png";
 
 const RelayHeader = ({ title, description }) => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleBack = () => {
-    if (location.state?.fromUpload) {
-      navigate(-3);
-    } else {
-      navigate("/home");
-    }
+    navigate(-1);
   };
 
   return (
@@ -20,6 +15,11 @@ const RelayHeader = ({ title, description }) => {
       <BackButton onClick={handleBack}>
         <img src={backIcon} alt="backIcon" />
       </BackButton>
+      <Location>
+        <p>센텀</p>
+        <p>►</p>
+        <p>음식점</p>
+      </Location>
     </HeaderContainer>
   );
 };
@@ -46,10 +46,15 @@ const BackButton = styled.button`
   border: none;
   cursor: pointer;
   img {
-    width: 20px;
-    height: 20px;
     filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.5));
   }
 `;
 
+const Location = styled.div`
+  flex: 1;
+  padding: 0 60px;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+`;
 export default RelayHeader;
