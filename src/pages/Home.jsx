@@ -1,11 +1,10 @@
 import React from "react";
-// import RouteSetting from "./RouteSetting";
-import MarkerList from "../components/maps/MarkerList"; // 여러 좌표 표시
+import HomeMap from "../components/maps/HomeMap"; // 여러 좌표 표시
 
 const Home = () => {
   return (
     <div>
-      <MarkerList />
+      <HomeMap />
     </div>
   );
 };

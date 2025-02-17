@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import Modal from "../Modal";
 
 const virtualCoordinates = [
   {
@@ -7,16 +7,38 @@ const virtualCoordinates = [
     lat: 33.450701,
     lng: 126.570667,
     name: "목적지 1",
+    address: "서울특별시",
+    participants: 15,
+    thumbnail: "https://via.placeholder.com/150", // 썸네일 예시
     relayId: 1,
   },
-  { id: 2, lat: 33.4502, lng: 126.570567, name: "목적지 2", relayId: 2 },
-  { id: 3, lat: 33.4509, lng: 126.571667, name: "목적지 3", relayId: 3 },
+  {
+    id: 2,
+    lat: 33.4502,
+    lng: 126.570567,
+    name: "목적지 2",
+    address: "부산광역시",
+    participants: 20,
+    thumbnail: "https://via.placeholder.com/150",
+    relayId: 2,
+  },
+  {
+    id: 3,
+    lat: 33.4509,
+    lng: 126.571667,
+    name: "목적지 3",
+    address: "대구광역시",
+    participants: 10,
+    thumbnail: "https://via.placeholder.com/150",
+    relayId: 3,
+  },
 ];
 
-const MarkerList = () => {
+const HomeMap = () => {
   const [map, setMap] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
+  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 정보
   const mapContainer = useRef(null);
-  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -46,21 +68,39 @@ const MarkerList = () => {
           });
           marker.setMap(mapInstance);
 
-          // 마커 클릭 시 페이지 이동
+          // 마커 클릭 시 모달 열기
           window.kakao.maps.event.addListener(marker, "click", () => {
-            navigate(`/relay/${coord.relayId}/story/1`); // relayId와 storyId 사용
+            setSelectedPlace(coord); // 클릭된 장소 정보 저장
+            setIsModalOpen(true); // 모달 열기
           });
         });
       });
     };
     document.body.appendChild(script);
-  }, [navigate]);
+  }, []);
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // 모달 닫기
+  };
+
+  const handleNavigate = () => {
+    if (selectedPlace) {
+      navigate(`/relay/${selectedPlace.relayId}/story/1`); // 경로 이동
+      handleCloseModal(); // 모달 닫기
+    }
+  };
 
   return (
     <div>
       <div ref={mapContainer} style={{ width: "100%", height: "500px" }} />
+
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        data={selectedPlace}
+      ></Modal>
     </div>
   );
 };
 
-export default MarkerList;
+export default HomeMap;
