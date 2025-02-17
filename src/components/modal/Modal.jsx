@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import camera_on from "../../assets/icons/camera_on.svg";
+import cameraoff from "../../assets/icons/camera_off.svg";
 
 const Modal = ({ isOpen, onClose, data }) => {
   const navigate = useNavigate();
@@ -15,7 +17,13 @@ const Modal = ({ isOpen, onClose, data }) => {
   const handleNavigate = () => {
     if (data) {
       navigate(`/relay/${data.relayId}/story/1`); // 경로 이동
-      onClose(); // 모달 닫기
+      onClose();
+    }
+  };
+
+  const handleCameraClick = () => {
+    if (data) {
+      navigate(`/relay/${data.relayId}/camera`); // 카메라 관련 경로 이동
     }
   };
 
@@ -24,13 +32,21 @@ const Modal = ({ isOpen, onClose, data }) => {
       <ModalContainer>
         {data && (
           <>
-            <Thumbnail src={data.thumbnail} alt={data.name} />
-            <Description>
-              <h1>{data.name}</h1>
-              <p>{data.address}</p>
-              <p className="participant">☻ {data.participants}명 여행중</p>
-              <GoBtn onClick={handleNavigate}>같이 여행하기</GoBtn>
-            </Description>
+            <span>● 해당 가게 쿠폰 보유</span>
+            <Row>
+              <Thumbnail src={data.thumbnail} alt={data.name} />
+              <Description>
+                <h1>{data.name}</h1>
+                <p>{data.address}</p>
+                <p className="participant">●{data.participants}명 여행중</p>
+                <ButtonRow>
+                  <CameraBtn onClick={handleCameraClick}>
+                    <img src={camera_on} alt="camera" />
+                  </CameraBtn>
+                  <GoBtn onClick={handleNavigate}>리뷰 보기</GoBtn>
+                </ButtonRow>
+              </Description>
+            </Row>
           </>
         )}
       </ModalContainer>
@@ -48,37 +64,49 @@ const ModalBg = styled.div`
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
-  align-items: flex-end;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
   z-index: 1000;
 `;
 
 const ModalContainer = styled.div`
+  border-top: 10px solid #88cbff;
   background-color: white;
-  display: flex;
-  width: 98%;
-  padding: 20px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  width: 100%;
+  max-width: 480px;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  span {
+    color: #609cdf;
+  }
+`;
+
+const Row = styled.div`
+  display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 30px;
+  margin-top: 20px;
 `;
 
 const Description = styled.div`
   flex: 1;
+
+  margin: auto;
   h1 {
     font-size: 18pt;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
   }
   p {
-    font-size: 10pt;
+    font-size: 12pt;
     color: #929292;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
   .participant {
-    font-weight: bold;
-    color: #539d35;
+    font-size: 9pt;
+    /* font-weight: bold; */
+    color: #3189c4;
     margin-top: 8px;
   }
 `;
@@ -92,15 +120,35 @@ const Thumbnail = styled.img`
 `;
 
 const GoBtn = styled.button`
-  margin-top: 10px;
-  justify-content: baseline;
+  justify-content: center;
   padding: 10px 20px;
-  background-color: #000000;
-  color: white;
-  border: none;
+  border: #55abe5 1px solid;
+  color: #55abe5;
   border-radius: 20px;
   cursor: pointer;
-  &:hover {
-    background-color: #aaaaaa;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+`;
+
+const ButtonRow = styled.div`
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+const CameraBtn = styled.button`
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  background-color: #e1efff;
+  img {
+    width: 20px;
+    height: 20px;
   }
 `;

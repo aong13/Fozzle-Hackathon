@@ -34,9 +34,8 @@ const HeaderContainer = styled.header`
   position: fixed;
   width: 100%;
   max-width: 480px;
-  padding: 20px 100px;
+  padding: 24px 100px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   color: #71c6ff;
   font-weight: 600;
   box-sizing: border-box;
