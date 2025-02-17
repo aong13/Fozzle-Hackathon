@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import backIcon from "../../assets/icons/back.png";
-import StepIndicator from "../StepIndicator";
 
-const RelayHeader = () => {
+const RelayHeader = ({ data }) => {
   const [currentStep, setCurrentStep] = useState(1);
 
   const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
@@ -22,12 +21,11 @@ const RelayHeader = () => {
           <img src={backIcon} alt="backIcon" />
         </BackButton>
         <Location>
-          <p>센텀</p>
+          <p>{data?.region || "수영구"}</p>
           <p>►</p>
-          <p>음식점</p>
+          <p>{data?.spotName}</p>
         </Location>
       </Row>
-      {/* <StepIndicator steps={steps} currentStep={currentStep} /> */}
     </HeaderContainer>
   );
 };
@@ -64,9 +62,10 @@ const BackButton = styled.button`
 
 const Location = styled.div`
   flex: 1;
-  padding: 0 60px;
+  padding: 0 64px;
   display: flex;
   justify-content: space-between;
   color: white;
 `;
+
 export default RelayHeader;

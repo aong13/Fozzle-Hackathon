@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const DoneModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
+  if (!isOpen) return null;
   const navigate = useNavigate();
 
   const onClick = () => {
