@@ -4,9 +4,9 @@ import styled from "styled-components";
 import camera_on from "../../assets/icons/camera_on.svg";
 import cameraoff from "../../assets/icons/camera_off.svg";
 
-const Modal = ({ isOpen, onClose, data }) => {
+const DescBottomSheet = ({ isOpen, onClose, data }) => {
   const navigate = useNavigate();
-  if (!isOpen) return null; // 모달이 열리지 않으면 렌더링하지 않음
+  if (!isOpen) return null;
 
   const handleBackgroundClick = (e) => {
     if (e.target === e.currentTarget) {
@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, data }) => {
 
   const handleNavigate = () => {
     if (data) {
-      navigate(`/relay/${data.relayId}/story/1`); // 경로 이동
+      navigate(`/relay/${data.relayId}/story/1`);
       onClose();
     }
   };
@@ -36,7 +36,7 @@ const Modal = ({ isOpen, onClose, data }) => {
               <Description>
                 <h1>{data.name}</h1>
                 <p>{data.address}</p>
-                <p className="participant">●{data.participants}명 여행중</p>
+                <p className="participant">●{data.storyCount}명 여행중</p>
                 <ButtonRow>
                   <CameraBtn onClick={handleCameraClick}>
                     <img src={camera_on} alt="camera" />
@@ -52,7 +52,7 @@ const Modal = ({ isOpen, onClose, data }) => {
   );
 };
 
-export default Modal;
+export default DescBottomSheet;
 
 const ModalBg = styled.div`
   position: fixed;
