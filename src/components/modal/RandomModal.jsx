@@ -62,7 +62,8 @@ const RandomModal = ({ isOpen, onClose, onPlaceSelect }) => {
             </p>
             <p>다음 여행지는</p>
             <p>
-              <BigNumber>{diceNumber + 1}</BigNumber>번 입니다
+              {/* <BigNumber>{diceNumber + 1}</BigNumber>번 입니다 */}
+              <BigNumber>{1}</BigNumber>번 입니다
             </p>
           </>
         )}
