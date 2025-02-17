@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import backIcon from "../assets/icons/arrow_back_black.png";
+import backIcon from "../../assets/icons/arrow_back_black.png";
 const UploadHeader = ({ title, onBtnClick, buttonText, disabled }) => {
   const navigate = useNavigate();
   const handleBack = () => {

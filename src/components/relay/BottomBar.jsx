@@ -7,7 +7,7 @@ const BottomBar = ({ relayData }) => {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate(`/upload/tickle`);
+    navigate(`/upload`);
   };
 
   console.log(relayData);

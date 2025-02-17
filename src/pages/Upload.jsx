@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import UploadHeader from "../components/UploadHeader";
+import UploadHeader from "../components/header/UploadHeader";
 import styled from "styled-components";
 import cameraIcon from "../assets/icons/camera.svg";
 import deleteIcon from "../assets/icons/x_icon.svg";
