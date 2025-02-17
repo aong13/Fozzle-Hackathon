@@ -11,10 +11,11 @@ import { postStory } from "../apis/storyApi";
 const Upload = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { relayId, title } = location.state || {}; // Destructure relayId from state
+  const { data } = location.state || {}; // Destructure relayId from state
   const fileInputRef = useRef(null);
   const addToast = useToastStore((state) => state.addToast);
 
+  console.log(data);
   // 상태 추가
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
@@ -47,7 +48,7 @@ const Upload = () => {
     try {
       const tickleData = {
         storyDescription: content,
-        spotId: relayId,
+        spotId: data.spotId,
         file: image,
       };
 
@@ -72,7 +73,7 @@ const Upload = () => {
       />
       <FormContainer>
         <TitleInputWrapper>
-          <Input type="text" value={title} readOnly />
+          <Input type="text" value={data.spotName} readOnly />
           <label htmlFor="fileUpload">
             <CameraBtn src={cameraIcon} alt="카메라 버튼" />
           </label>

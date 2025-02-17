@@ -11,6 +11,7 @@ import Upload from "./pages/Upload";
 import MyPage from "./pages/MyPage";
 import Relay from "./pages/relay/Relay";
 import RelayLayout from "./pages/relay/RelayLayout";
+import Destination from "./pages/Destination";
 
 const PrivateRoute = ({ element }) => {
   const { user } = useAuthStore();
@@ -38,6 +39,7 @@ const AppRouter = () => {
         <Route path="/home" element={<Home />} />
         <Route path="/guest-login" element={<Guest />} />
         <Route path="/upload" element={<Upload />} />
+        <Route path="/destination/:spotId" element={<Destination />} />
         <Route path="/mypage" element={<PrivateRoute element={<MyPage />} />} />
         <Route path="/relay/:relayId" element={<RelayLayout />}>
           <Route path="story/:storyId" element={<Relay />} />

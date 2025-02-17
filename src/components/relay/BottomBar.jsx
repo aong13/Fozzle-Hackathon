@@ -7,8 +7,8 @@ const BottomBar = ({ relayData }) => {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate("/upload", {
-      state: { relayId: relayData.spotId, title: relayData.spotName },
+    navigate(`/destination/${relayData.spotId}`, {
+      state: { data: relayData },
     });
   };
   return (
