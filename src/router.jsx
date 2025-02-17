@@ -10,7 +10,8 @@ import Search from "./pages/Search";
 import UploadRelay from "./pages/UploadRelay";
 import UploadTickle from "./pages/UploadTickle";
 import MyPage from "./pages/MyPage";
-import Relay from "./pages/Relay";
+import Relay from "./pages/relay/Relay";
+import RelayLayout from "./pages/relay/RelayLayout";
 
 const PrivateRoute = ({ element }) => {
   const { user } = useAuthStore();
@@ -32,7 +33,9 @@ const AppRouter = () => {
           element={<PrivateRoute element={<UploadTickle />} />}
         />
         <Route path="/mypage" element={<PrivateRoute element={<MyPage />} />} />
-        <Route path="/tickle/:tickleId" element={<Relay />} />
+        <Route path="/relay/:relayId" element={<RelayLayout />}>
+          <Route path="story/:storyId" element={<Relay />} />
+        </Route>
       </Routes>
     </Router>
   );
