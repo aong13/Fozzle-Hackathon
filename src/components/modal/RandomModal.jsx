@@ -11,17 +11,17 @@ import questionDice from "../../assets/dice/question.png";
 
 const diceImages = [dice1, dice2, dice3, dice4, dice5, dice6, questionDice];
 
-const RandomModal = ({ isOpen, onClose, data }) => {
+const RandomModal = ({ isOpen, onClose, onPlaceSelect, data }) => {
   if (!isOpen) return null;
   const navigate = useNavigate();
   const [diceNumber, setDiceNumber] = useState(6);
   const [rolling, setRolling] = useState(false);
-  const [rolled, setRolled] = useState(false); // Track if dice has rolled
+  const [rolled, setRolled] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setDiceNumber(6);
-      setRolled(false); // Reset when modal opens
+      setRolled(false);
     }
   }, [isOpen]);
 
@@ -34,7 +34,7 @@ const RandomModal = ({ isOpen, onClose, data }) => {
       if (count >= 10) {
         clearInterval(interval);
         setRolling(false);
-        setRolled(true); // Set rolled to true after dice finishes
+        setRolled(true);
       }
     }, 100);
   };
@@ -46,13 +46,19 @@ const RandomModal = ({ isOpen, onClose, data }) => {
     }
   };
 
+  const handlePlaceSelection = () => {
+    if (data) {
+      onPlaceSelect(data); // 선택된 장소 데이터를 상위 컴포넌트로 전달
+    }
+  };
+
   return (
     <ModalBg onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <h1>부산여행마블</h1>
         <DiceImg
-          src={diceImages[diceNumber]} // Show the current dice
-          alt={`주사위 ${diceNumber === 6 ? "?" : diceNumber + 1}`} // Alt text based on dice number
+          src={diceImages[diceNumber]}
+          alt={`주사위 ${diceNumber === 6 ? "?" : diceNumber + 1}`}
         />
         {diceNumber === 6 ? (
           <p>다음 여행지는??</p>
@@ -66,13 +72,16 @@ const RandomModal = ({ isOpen, onClose, data }) => {
               <BigNumber>{diceNumber + 1}</BigNumber>번 입니다
             </p>
             {data && (
-              <p>반경: {data.radius ? `${data.radius} km` : "정보 없음"}</p> // Show radius if available
+              <p>반경: {data.radius ? `${data.radius} km` : "정보 없음"}</p>
             )}
           </>
         )}
         <GoBtn onClick={rolled ? onClose : rollDice} disabled={rolling}>
           {rolling ? "굴리는 중..." : rolled ? "모달닫기" : "주사위 돌리기"}
         </GoBtn>
+        {rolled && (
+          <GoBtn onClick={handlePlaceSelection}>선택된 여행지 확인</GoBtn>
+        )}
       </ModalContainer>
     </ModalBg>
   );
@@ -100,7 +109,7 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 15px; /* Increased gap for more spacing */
+  gap: 15px;
   background-color: #71c6ff;
   width: 80%;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
@@ -113,7 +122,7 @@ const ModalContainer = styled.div`
 const DiceImg = styled.img`
   width: 80px;
   height: 80px;
-  margin: 15px 0; /* Increased margin for more space around dice */
+  margin: 15px 0;
 `;
 
 const BigNumber = styled.span`
@@ -123,7 +132,7 @@ const BigNumber = styled.span`
 
 const GoBtn = styled.button`
   justify-content: center;
-  padding: 12px 25px; /* Slightly larger button padding */
+  padding: 12px 25px;
   border: #55abe5 1px solid;
   color: #55abe5;
   border-radius: 20px;

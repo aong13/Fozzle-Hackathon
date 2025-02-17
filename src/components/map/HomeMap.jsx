@@ -7,6 +7,10 @@ const KakaoMap = () => {
   const [places, setPlaces] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기 상태
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 데이터
+  const [mapCenter, setMapCenter] = useState({
+    centerX: 35.160253016666665,
+    centerY: 129.11391536666667,
+  }); // 중심 좌표 상태
 
   // 모달 열기
   const handleOpenModal = (place) => {
@@ -33,7 +37,7 @@ const KakaoMap = () => {
       kakao.maps.load(async () => {
         const container = document.getElementById("map"); // 맵이 렌더링 될 DOM
         const options = {
-          center: new kakao.maps.LatLng(35.1530938, 129.1177134), // 초기 중심 좌표
+          center: new kakao.maps.LatLng(mapCenter.centerX, mapCenter.centerY), // 동적으로 설정된 중심 좌표
           level: 5,
         };
         const map = new kakao.maps.Map(container, options);
@@ -67,7 +71,7 @@ const KakaoMap = () => {
 
           // 마커 클릭 시 모달 열기
           kakao.maps.event.addListener(marker, "click", () => {
-            handleOpenModal(data[index]); // 클릭된 장소 데이터 전달
+            handleOpenModal(data.spots[index]); // 클릭된 장소 데이터 전달
           });
         });
 
@@ -80,17 +84,15 @@ const KakaoMap = () => {
           strokeStyle: "solid", // 선 스타일
         });
 
-        // 맵에 선 추가
         polyline.setMap(map);
       });
     };
-  }, []);
+  }, [mapCenter]);
 
   return (
     <div>
       <div id="map" style={{ width: "100%", height: "100vh" }}></div>
 
-      {/* 모달 컴포넌트 */}
       <DescBottomSheet
         isOpen={isModalOpen}
         onClose={handleCloseModal}

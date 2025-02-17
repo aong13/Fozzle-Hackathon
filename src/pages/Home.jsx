@@ -6,17 +6,26 @@ import styled from "styled-components";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 상태 추가
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handlePlaceSelection = (placeData) => {
+    setSelectedPlace(placeData); // RandomModal에서 선택된 장소 데이터 설정
+    setIsModalOpen(false); // 모달 닫기
+  };
+
   return (
     <Container>
       <HomeHeader />
-      <HomeMap />
-      <RandomModal isOpen={isModalOpen} onClose={toggleModal} />
-
+      <HomeMap selectedPlace={selectedPlace} />
+      <RandomModal
+        isOpen={isModalOpen}
+        onClose={toggleModal}
+        onPlaceSelect={handlePlaceSelection}
+      />
       <FloatingButton onClick={toggleModal}>여행 시작하기</FloatingButton>
     </Container>
   );
