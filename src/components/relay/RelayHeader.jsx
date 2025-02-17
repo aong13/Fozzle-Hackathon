@@ -39,8 +39,8 @@ const HeaderContainer = styled.div`
   z-index: 100;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(0, 0, 0, 0.2) 50%,
     rgba(0, 0, 0, 0) 100%
   );
 `;
@@ -66,6 +66,7 @@ const Location = styled.div`
   display: flex;
   justify-content: space-between;
   color: white;
+  text-shadow: 0px 0px 2px rgba(0, 0, 0, 0.5);
 `;
 
 export default RelayHeader;
