@@ -129,6 +129,7 @@ const Thumbnail = styled.img`
   background-color: gray;
   aspect-ratio: 9 / 16;
   width: 90px;
+  object-fit: cover;
 `;
 
 const GoBtn = styled.button`
