@@ -3,10 +3,14 @@ import HomeMap from "../components/map/HomeMap";
 import HomeHeader from "../components/header/HomeHeader";
 import RandomModal from "../components/modal/RandomModal";
 import styled from "styled-components";
+import { fetchDistrictData } from "../apis/homeApi";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNumber, setSelectedNumber] = useState(null);
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [districtData, setDistrictData] = useState(null);
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -17,14 +21,40 @@ const Home = () => {
     setIsModalOpen(false);
   };
 
+  const categoryMap = {
+    모두: "ALL",
+    음식점: "RESTAURANT",
+    카페: "CAFE",
+    관광지: "VIEW_POINT",
+    축제: "FESTIVAL",
+  };
+
+  const handleSelect = async (region, category) => {
+    setSelectedRegion(region);
+    setSelectedCategory(category);
+
+    const englishCategory = categoryMap[category];
+
+    try {
+      const data = await fetchDistrictData({
+        district: region,
+        type: englishCategory,
+      });
+      setDistrictData(data);
+      console.log(data);
+    } catch (error) {
+      console.error("데이터 가져오기 실패", error);
+    }
+  };
+
   return (
     <Container>
-      <HomeHeader />
-      <HomeMap selectedNumber={selectedNumber} />
+      <HomeHeader onSelect={handleSelect} />
+      <HomeMap selectedNumber={selectedNumber} data={districtData} />
       <RandomModal
         isOpen={isModalOpen}
         onClose={toggleModal}
-        onPlaceSelect={handleNumberSelection} // 함수명 수정
+        onPlaceSelect={handleNumberSelection}
       />
       <FloatingButton onClick={toggleModal}>여행 시작하기</FloatingButton>
     </Container>
@@ -51,8 +81,4 @@ const FloatingButton = styled.button`
   cursor: pointer;
   z-index: 2;
   transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #4b94d6;
-  }
 `;

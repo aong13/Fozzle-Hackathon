@@ -7,10 +7,10 @@ const BottomBar = ({ relayData }) => {
   const navigate = useNavigate();
 
   const handlePlusClick = () => {
-    navigate(`/upload`);
+    navigate("/upload", {
+      state: { relayId: relayData.spotId, title: relayData.spotName },
+    });
   };
-
-  console.log(relayData);
   return (
     <Container>
       <Description>
@@ -25,7 +25,7 @@ const BottomBar = ({ relayData }) => {
           likeCount={relayData?.tickleLikes || 100}
           tickleId={relayData?.storyId}
         />
-        <PlusBtn onClick={handlePlusClick}>목표지로 설정하기</PlusBtn>
+        <Btn onClick={handlePlusClick}>목표지로 설정하기</Btn>
       </BottomContainer>
     </Container>
   );
@@ -40,10 +40,11 @@ const Container = styled.div`
   flex-direction: column;
   z-index: 100;
   padding: 50px 20px 30px;
+
   background: linear-gradient(
     to top,
     rgba(0, 0, 0, 0.3) 0%,
-    rgba(0, 0, 0, 0.15) 60%,
+    rgba(0, 0, 0, 0.2) 80%,
     rgba(0, 0, 0, 0) 100%
   );
 `;
@@ -77,14 +78,16 @@ const Description = styled.div`
   }
 `;
 
-const PlusBtn = styled.button`
+const Btn = styled.button`
   background: #ffffff;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: #71c6ff;
+  font-size: 16px;
   width: 80%;
   padding: 17px;
   border-radius: 50px;
   margin: 0 20px;
   font-weight: 600;
+  border: none;
 `;
 
 const ProfileCircle = styled.div`

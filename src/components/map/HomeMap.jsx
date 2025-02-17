@@ -4,8 +4,7 @@ import markerIcon from "../../assets/icons/marker.png"; // 기본 마커 이미�
 import selectedMarkerIcon from "../../assets/icons/marker_selected.png"; // 특별 마커 이미지
 import { fetchHomeData } from "../../apis/homeApi";
 
-const KakaoMap = ({ selectedNumber }) => {
-  console.log(selectedNumber);
+const KakaoMap = ({ selectedNumber, data }) => {
   const [places, setPlaces] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열기 상태
   const [selectedPlace, setSelectedPlace] = useState(null); // 선택된 장소 데이터
@@ -44,10 +43,20 @@ const KakaoMap = ({ selectedNumber }) => {
         };
         const map = new kakao.maps.Map(container, options);
 
-        // 데이터 로드 (fetchHomeData는 외부 API 호출로 데이터를 가져오는 함수)
-        const data = await fetchHomeData();
-        console.log("로드된 데이터:", data.spots); // 데이터 확인
-        setPlaces(data.spots);
+        if (!data && places.length === 0) {
+          const fetchedData = await fetchHomeData();
+          setPlaces(fetchedData.spots); // 가져온 데이터를 상태에 저장
+          setMapCenter({
+            centerX: fetchedData.centerX,
+            centerY: fetchedData.centerY,
+          });
+        } else if (data) {
+          setPlaces(data.spots); // prop으로 전달된 데이터 사용
+          setMapCenter({
+            centerX: data.centerX,
+            centerY: data.centerY,
+          });
+        }
 
         // 기본 마커 이미지 설정
         const markerImage = new kakao.maps.MarkerImage(
@@ -68,7 +77,7 @@ const KakaoMap = ({ selectedNumber }) => {
         );
 
         // 데이터 기반으로 마커 생성
-        const positions = data.spots.map(
+        const positions = places.map(
           (place) => new kakao.maps.LatLng(place.x, place.y)
         );
 
@@ -82,7 +91,7 @@ const KakaoMap = ({ selectedNumber }) => {
 
           // 마커 클릭 시 모달 열기
           kakao.maps.event.addListener(marker, "click", () => {
-            handleOpenModal(data.spots[index]); // 클릭된 장소 데이터 전달
+            handleOpenModal(places[index]); // 클릭된 장소 데이터 전달
           });
         });
 
@@ -98,7 +107,7 @@ const KakaoMap = ({ selectedNumber }) => {
         polyline.setMap(map);
       });
     };
-  }, [mapCenter, selectedNumber]); // `selectedNumber` 추가하여 변경 사항 반영
+  }, [places, selectedNumber, data]); // `places`, `selectedNumber`, `data`가 변경될 때만 실행
 
   return (
     <div>

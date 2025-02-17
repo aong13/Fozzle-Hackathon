@@ -32,10 +32,26 @@ export const fetchHomeData = async () => {
         type: "ALL",
       },
     });
-    console.log("홈화면", response);
     return response.data;
   } catch (error) {
     console.error("홈 화면 데이터 불러오기 실패:", error);
+    throw error;
+  }
+};
+
+export const fetchDistrictData = async ({ district, type }) => {
+  try {
+    const response = await api.get(`/api/spots/recommend/district`, {
+      params: {
+        city: "부산광역시",
+        district: district,
+        type: type,
+      },
+    });
+    console.log("지역", response);
+    return response.data;
+  } catch (error) {
+    console.error("지역 데이터 :", error);
     throw error;
   }
 };

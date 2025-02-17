@@ -80,10 +80,3 @@ const NavButtons = styled.div`
     user-select: none;
   }
 `;
-
-const LoadingMessage = styled.div`
-  font-size: 20px;
-  text-align: center;
-  margin-top: 50px;
-  color: #333;
-`;

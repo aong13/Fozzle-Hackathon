@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import SelectBottomSheet from "../modal/SelectBottomSheet";
 
-const HomeHeader = () => {
+const HomeHeader = ({ onSelect }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRegion, setSelectedRegion] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -25,11 +25,13 @@ const HomeHeader = () => {
         onSelect={(region, category) => {
           setSelectedRegion(region);
           setSelectedCategory(category);
+          onSelect(region, category); // 부모에게 값 전달
         }}
       />
     </>
   );
 };
+
 const HeaderContainer = styled.header`
   position: fixed;
   width: 100%;
@@ -45,6 +47,7 @@ const HeaderContainer = styled.header`
   z-index: 1000;
   cursor: pointer;
 `;
+
 const Text = styled.p`
   color: ${(props) => (props.isSelected ? "#71c6ff" : "#868E94")};
   font-weight: 600;

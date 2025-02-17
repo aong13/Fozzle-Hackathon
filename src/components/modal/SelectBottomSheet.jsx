@@ -24,15 +24,7 @@ const SelectBottomSheet = ({ isOpen, onClose, onSelect }) => {
     "중구",
     "해운대구",
   ];
-  const categories = [
-    "모두",
-    "음식점",
-    "카페",
-    "관광지",
-    "쇼핑",
-    "문화",
-    "자연",
-  ];
+  const categories = ["모두", "음식점", "카페", "관광지", "축제"];
 
   // 두 개 다 선택되었을 때 자동으로 onSelect 실행 후 바텀시트 닫기
   useEffect(() => {

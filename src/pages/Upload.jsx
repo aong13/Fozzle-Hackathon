@@ -1,24 +1,21 @@
 import React, { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import UploadHeader from "../components/header/UploadHeader";
 import styled from "styled-components";
 import cameraIcon from "../assets/icons/camera.svg";
 import deleteIcon from "../assets/icons/x_icon.svg";
 import ImgWithBlur from "../components/ImgBlur";
 import useToastStore from "../stores/useToastStore";
+import { postStory } from "../apis/storyApi";
 
 const Upload = () => {
   const navigate = useNavigate();
-
-  const userImage = sessionStorage.getItem("userImage");
-  const userName = sessionStorage.getItem("userName");
-
+  const location = useLocation();
+  const { relayId, title } = location.state || {}; // Destructure relayId from state
   const fileInputRef = useRef(null);
   const addToast = useToastStore((state) => state.addToast);
 
   // 상태 추가
-  const [title, setTitle] = useState("지역이름");
-  const [relayId, setRelayId] = useState(null);
   const [content, setContent] = useState("");
   const [image, setImage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -49,29 +46,15 @@ const Upload = () => {
 
     try {
       const tickleData = {
-        title,
-        relayId,
-        tickleDescription: content,
-        userImage,
+        storyDescription: content,
+        spotId: relayId,
         file: image,
-        userName,
       };
 
-      // API 호출
-      // const response = await addTickleData(tickleData);
-
-      // 임시 데이터
-      const response = {
-        data: {
-          relayId: 123,
-          tickleId: 456,
-        },
-      };
-
-      navigate(
-        `/relay/${response.data.relayId}/tickle/${response.data.tickleId}`,
-        { state: { fromUpload: true } }
-      );
+      const response = await postStory(tickleData);
+      navigate(`/relay/${response.spotId}/story/${response.storyId}`, {
+        state: { fromUpload: true },
+      });
     } catch (error) {
       console.error("데이터 전송 실패:", error);
     } finally {
