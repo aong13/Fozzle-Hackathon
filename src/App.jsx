@@ -2,12 +2,18 @@ import AppRouter from "./router.jsx";
 import styled from "styled-components";
 import "./reset.css";
 import GlobalStyle from "./styles/globalStyles";
+import Toast from "./components/Toast.jsx";
+import useToastStore from "./stores/useToastStore.js";
 
 function App() {
+  const toasts = useToastStore((state) => state.toasts);
   return (
     <AppContainer>
       <GlobalStyle />
       <AppRouter />
+      {toasts.map((toast) => (
+        <Toast key={toast.id} id={toast.id} message={toast.message} />
+      ))}
     </AppContainer>
   );
 }

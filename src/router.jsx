@@ -7,8 +7,7 @@ import {
 import useAuthStore from "./stores/useAuthStore";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
-import UploadRelay from "./pages/UploadRelay";
-import UploadTickle from "./pages/UploadTickle";
+import Upload from "./pages/Upload";
 import MyPage from "./pages/MyPage";
 import Relay from "./pages/relay/Relay";
 import RelayLayout from "./pages/relay/RelayLayout";
@@ -24,14 +23,8 @@ const AppRouter = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
-        <Route
-          path="/upload/relay"
-          element={<PrivateRoute element={<UploadRelay />} />}
-        />
-        <Route
-          path="/upload/tickle"
-          element={<PrivateRoute element={<UploadTickle />} />}
-        />
+
+        <Route path="/upload" element={<Upload />} />
         <Route path="/mypage" element={<PrivateRoute element={<MyPage />} />} />
         <Route path="/relay/:relayId" element={<RelayLayout />}>
           <Route path="story/:storyId" element={<Relay />} />

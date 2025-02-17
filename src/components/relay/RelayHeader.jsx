@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import backIcon from "../../assets/icons/back.png";
+import StepIndicator from "../StepIndicator";
 
-const RelayHeader = ({ title, description }) => {
+const RelayHeader = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
+
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -12,14 +17,17 @@ const RelayHeader = ({ title, description }) => {
 
   return (
     <HeaderContainer>
-      <BackButton onClick={handleBack}>
-        <img src={backIcon} alt="backIcon" />
-      </BackButton>
-      <Location>
-        <p>센텀</p>
-        <p>►</p>
-        <p>음식점</p>
-      </Location>
+      <Row>
+        <BackButton onClick={handleBack}>
+          <img src={backIcon} alt="backIcon" />
+        </BackButton>
+        <Location>
+          <p>센텀</p>
+          <p>►</p>
+          <p>음식점</p>
+        </Location>
+      </Row>
+      {/* <StepIndicator steps={steps} currentStep={currentStep} /> */}
     </HeaderContainer>
   );
 };
@@ -30,8 +38,6 @@ const HeaderContainer = styled.div`
   top: 0;
   left: 0;
   right: 0;
-  display: flex;
-  align-items: center;
   z-index: 100;
   background: linear-gradient(
     to bottom,
@@ -39,6 +45,12 @@ const HeaderContainer = styled.div`
     rgba(0, 0, 0, 0.15) 40%,
     rgba(0, 0, 0, 0) 100%
   );
+`;
+
+const Row = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 `;
 
 const BackButton = styled.button`

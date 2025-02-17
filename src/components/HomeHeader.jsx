@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({ title, onBtnClick, buttonText, disabled }) => {
+const HomeHeader = ({ title, onBtnClick, buttonText, disabled }) => {
   const navigate = useNavigate();
   const handleBack = () => {
     navigate(-1);
@@ -31,4 +31,4 @@ const HeaderContainer = styled.header`
   z-index: 1000;
 `;
 
-export default Header;
+export default HomeHeader;
