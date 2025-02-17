@@ -3,43 +3,41 @@ import { useParams, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { handlePrevious, handleNext } from "../../utils/relayUtils";
 import ImgWithBlur from "../../components/ImgBlur";
+import { getAllStory, getStoryData } from "../../apis/storyApi";
 
 const Relay = () => {
-  const [tickle, setTickle] = useState(null); // 초기값을 null로 설정
+  const [story, setStory] = useState(null); // 초기값을 null로 설정
   const [allRelay, setAllRelay] = useState([]);
-  const { relayId, tickleId } = useParams();
+  const { relayId, storyId } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRelayData = async () => {
       try {
-        setTickle(dummyTickleData);
+        const response = await getStoryData(storyId);
+        const allRelayData = await getAllStory(relayId);
+        setStory(response);
+        setAllRelay(allRelayData);
       } catch (error) {
         console.error("Error fetching data", error);
       }
     };
-
-    if (relayId && tickleId) {
+    if (relayId && storyId) {
       fetchRelayData();
     }
-  }, [relayId, tickleId]);
+  }, [relayId, storyId]);
 
   return (
     <Container>
       <ImageWrapper>
-        <ImgWithBlur
-          imageSrc={
-            tickle?.tickleImage ||
-            "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTrO5jJwdTvUX2227Qe6YvVlDG0ChlXCf8mtr6etpVBlxxEvjJWql3e09C5R_oa9Uu9KgrKcYAT2n972-J14af6Fw"
-          }
-        />
+        <ImgWithBlur imageSrc={story?.storyThumbnail} />
       </ImageWrapper>
       <NavButtons>
         <button
-          onClick={() => handlePrevious(allRelay, tickleId, relayId, navigate)}
+          onClick={() => handlePrevious(allRelay, storyId, relayId, navigate)}
         ></button>
         <button
-          onClick={() => handleNext(allRelay, tickleId, relayId, navigate)}
+          onClick={() => handleNext(allRelay, storyId, relayId, navigate)}
         ></button>
       </NavButtons>
     </Container>

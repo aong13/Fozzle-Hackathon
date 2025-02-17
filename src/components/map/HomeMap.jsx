@@ -11,6 +11,7 @@ const HomeMap = () => {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const mapContainer = useRef(null);
   const navigate = useNavigate();
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${
@@ -18,22 +19,28 @@ const HomeMap = () => {
     }&autoload=false`;
 
     script.onload = async () => {
-      window.kakao.maps.load(async () => {
-        const mapOptions = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        };
+      try {
+        window.kakao.maps.load(async () => {
+          const mapOptions = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3,
+          };
 
-        const mapInstance = new window.kakao.maps.Map(
-          mapContainer.current,
-          mapOptions
-        );
-        setMap(mapInstance);
+          // 지도 초기화 후 mapInstance를 확인
+          const mapInstance = new window.kakao.maps.Map(
+            mapContainer.current,
+            mapOptions
+          );
+          console.log("지도 로드 성공:", mapInstance); // 지도 인스턴스 확인
+          setMap(mapInstance);
 
-        const data = await fetchHomeData();
-
-        setPlaces(data);
-      });
+          const data = await fetchHomeData();
+          console.log("로드된 데이터:", data); // 데이터 확인
+          setPlaces(data);
+        });
+      } catch (error) {
+        console.error("카카오맵 로딩 중 오류 발생:", error);
+      }
     };
 
     document.body.appendChild(script);
@@ -52,7 +59,12 @@ const HomeMap = () => {
       const bounds = new window.kakao.maps.LatLngBounds();
 
       places.forEach((coord) => {
+        // 좌표 값 확인
+        console.log("마커 위치 확인:", coord.y, coord.x);
+
         const markerPosition = new window.kakao.maps.LatLng(coord.y, coord.x);
+        console.log(markerPosition); // LatLng 객체 확인
+
         const marker = new window.kakao.maps.Marker({
           position: markerPosition,
           image: new window.kakao.maps.MarkerImage(markerImageSrc, markerSize),
@@ -69,11 +81,14 @@ const HomeMap = () => {
       });
 
       map.setBounds(bounds);
+      console.log("지도 경계 설정 후", map.getBounds());
       map.relayout();
 
       const path = places.map(
         (coord) => new window.kakao.maps.LatLng(coord.y, coord.x)
       );
+      console.log("polyline 경로:", path); // 경로 확인
+
       const polyline = new window.kakao.maps.Polyline({
         path: path,
         strokeWeight: 3,
@@ -89,13 +104,6 @@ const HomeMap = () => {
     setIsModalOpen(false);
   };
 
-  const handleNavigate = () => {
-    if (selectedPlace) {
-      navigate(`/relay/${selectedPlace.relayId}/story/1`);
-      handleCloseModal();
-    }
-  };
-
   return (
     <div>
       <div
@@ -109,7 +117,6 @@ const HomeMap = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         data={selectedPlace}
-        onNavigate={handleNavigate}
       />
     </div>
   );

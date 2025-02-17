@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import camera_on from "../../assets/icons/camera_on.svg";
 import cameraoff from "../../assets/icons/camera_off.svg";
+import { getAllStory } from "../../apis/storyApi"; // API 호출 함수 추가
 
 const DescBottomSheet = ({ isOpen, onClose, data }) => {
+  const [storyId, setStoryId] = useState(null); // 상태로 storyId 관리
   const navigate = useNavigate();
+
   if (!isOpen) return null;
 
   const handleBackgroundClick = (e) => {
@@ -14,9 +17,21 @@ const DescBottomSheet = ({ isOpen, onClose, data }) => {
     }
   };
 
-  const handleNavigate = () => {
+  const handleNavigate = async () => {
     if (data) {
-      navigate(`/relay/${data.relayId}/story/1`);
+      try {
+        const response = await getAllStory(
+          "36638389-4bca-477c-b1b6-1f1d781f333a"
+        );
+        console.log(response);
+        if (response) {
+          navigate(
+            `/relay/36638389-4bca-477c-b1b6-1f1d781f333a/story/${response[0]}`
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching story data", error);
+      }
       onClose();
     }
   };
@@ -90,7 +105,6 @@ const Row = styled.div`
 
 const Description = styled.div`
   flex: 1;
-
   margin: auto;
   h1 {
     font-size: 18pt;
@@ -103,7 +117,6 @@ const Description = styled.div`
   }
   .participant {
     font-size: 9pt;
-    /* font-weight: bold; */
     color: #3189c4;
     margin-top: 8px;
   }

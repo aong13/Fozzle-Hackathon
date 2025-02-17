@@ -15,15 +15,15 @@ const BottomBar = ({ relayData }) => {
     <Container>
       <Description>
         <div>
-          <ProfileCircle image={relayData?.authorImage || ""} />
-          <h1>{relayData?.authorNickname || "양두영"}</h1>
+          <ProfileCircle image={relayData?.authorProfileImage || ""} />
+          <h1>{relayData?.authorName || "양두영"}</h1>
         </div>
-        <p>{relayData?.tickleDescription || "하이하이"}</p>
+        <p>{relayData?.storyDescription || "하이하이"}</p>
       </Description>
       <BottomContainer>
         <HeartBtn
           likeCount={relayData?.tickleLikes || 100}
-          tickleId={relayData?.tickleId}
+          tickleId={relayData?.storyId}
         />
         <PlusBtn onClick={handlePlusClick}>목표지로 설정하기</PlusBtn>
       </BottomContainer>
