@@ -22,9 +22,7 @@ const Modal = ({ isOpen, onClose, data }) => {
   };
 
   const handleCameraClick = () => {
-    if (data) {
-      navigate(`/relay/${data.relayId}/camera`); // 카메라 관련 경로 이동
-    }
+    console.log("미정!");
   };
 
   return (
